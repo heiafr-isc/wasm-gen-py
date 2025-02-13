@@ -39,7 +39,7 @@ class Module(Node):
     globals_: list[Global] = Field(default_factory=list)
     data: list = Field(default_factory=list)
 
-    _types: list = Field(default_factory=list)
+    _types: list
 
     def compute_indexes(self):
         types = {}
@@ -47,6 +47,7 @@ class Module(Node):
         function_index = 0
         memory_index = 0
         global_index = 0
+        self._types = []
 
         for i in self.imports:
             if isinstance(i.node, BaseFunction):
