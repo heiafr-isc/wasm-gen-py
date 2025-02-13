@@ -2,12 +2,12 @@
 #
 # SPDX-License-Identifier: Apache-2.0 OR MIT
 
-i32_t = b"\x7F"
-i64_t = b"\x7E"
-f32_t = b"\x7D"
-f64_t = b"\x7C"
+i32_t = b"\x7f"
+i64_t = b"\x7e"
+f32_t = b"\x7d"
+f64_t = b"\x7c"
 
-v128_t = b"\x7B"
+v128_t = b"\x7b"
 
 funcref_t = b"\x70"
-externref_t = b"+\x6F"
+externref_t = b"+\x6f"

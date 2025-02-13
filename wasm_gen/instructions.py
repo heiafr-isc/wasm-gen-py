@@ -45,7 +45,7 @@ class Else(Instruction):
 
 class End(Instruction):
     def __bytes__(self):
-        return b"\x0B"
+        return b"\x0b"
 
 
 class Br(Instruction):
@@ -53,7 +53,7 @@ class Br(Instruction):
     label: int
 
     def __bytes__(self):
-        return b"\x0C" + bytes(Integer(value=self.label))
+        return b"\x0c" + bytes(Integer(value=self.label))
 
 
 class BrIf(Instruction):
@@ -61,17 +61,17 @@ class BrIf(Instruction):
     label: int
 
     def __bytes__(self):
-        return b"\x0D" + bytes(Integer(value=self.label))
+        return b"\x0d" + bytes(Integer(value=self.label))
 
 
 class BrTable(Instruction):
     def __bytes__(self):
-        return b"\x0E"
+        return b"\x0e"
 
 
 class Return(Instruction):
     def __bytes__(self):
-        return b"\x0F"
+        return b"\x0f"
 
 
 class Call(Instruction):
@@ -97,12 +97,12 @@ class CallIndirect(Instruction):
 
 class Drop(Instruction):
     def __bytes__(self):
-        return b"\x1A"
+        return b"\x1a"
 
 
 class Select(Instruction):
     def __bytes__(self):
-        return b"\x1B"
+        return b"\x1b"
 
 
 class LocalGet(Instruction):
@@ -182,7 +182,7 @@ class I32Load(I32):
 class I32Load8S(I32):
     def __bytes__(self):
         return (
-            b"\x2C"
+            b"\x2c"
             + bytes(Integer(value=self.align))
             + bytes(Integer(value=self.offset))
         )
@@ -191,7 +191,7 @@ class I32Load8S(I32):
 class I32Load8U(I32):
     def __bytes__(self):
         return (
-            b"\x2D"
+            b"\x2d"
             + bytes(Integer(value=self.align))
             + bytes(Integer(value=self.offset))
         )
@@ -200,7 +200,7 @@ class I32Load8U(I32):
 class I32Load16S(I32):
     def __bytes__(self):
         return (
-            b"\x2E"
+            b"\x2e"
             + bytes(Integer(value=self.align))
             + bytes(Integer(value=self.offset))
         )
@@ -209,7 +209,7 @@ class I32Load16S(I32):
 class I32Load16U(I32):
     def __bytes__(self):
         return (
-            b"\x2F"
+            b"\x2f"
             + bytes(Integer(value=self.align))
             + bytes(Integer(value=self.offset))
         )
@@ -227,7 +227,7 @@ class I32Store(I32):
 class I32Store8(I32):
     def __bytes__(self):
         return (
-            b"\x3A"
+            b"\x3a"
             + bytes(Integer(value=self.align))
             + bytes(Integer(value=self.offset))
         )
@@ -236,7 +236,7 @@ class I32Store8(I32):
 class I32Store16(I32):
     def __bytes__(self):
         return (
-            b"\x3B"
+            b"\x3b"
             + bytes(Integer(value=self.align))
             + bytes(Integer(value=self.offset))
         )
@@ -277,32 +277,32 @@ class I32LtU(Instruction):
 
 class I32GtS(Instruction):
     def __bytes__(self):
-        return b"\x4A"
+        return b"\x4a"
 
 
 class I32GtU(Instruction):
     def __bytes__(self):
-        return b"\x4B"
+        return b"\x4b"
 
 
 class I32LeS(Instruction):
     def __bytes__(self):
-        return b"\x4C"
+        return b"\x4c"
 
 
 class I32LeU(Instruction):
     def __bytes__(self):
-        return b"\x4D"
+        return b"\x4d"
 
 
 class I32GeS(Instruction):
     def __bytes__(self):
-        return b"\x4E"
+        return b"\x4e"
 
 
 class I32GeU(Instruction):
     def __bytes__(self):
-        return b"\x4F"
+        return b"\x4f"
 
 
 class I32Clz(Instruction):
@@ -322,32 +322,32 @@ class I32Popcnt(Instruction):
 
 class I32Add(Instruction):
     def __bytes__(self):
-        return b"\x6A"
+        return b"\x6a"
 
 
 class I32Sub(Instruction):
     def __bytes__(self):
-        return b"\x6B"
+        return b"\x6b"
 
 
 class I32Mul(Instruction):
     def __bytes__(self):
-        return b"\x6C"
+        return b"\x6c"
 
 
 class I32DivS(Instruction):
     def __bytes__(self):
-        return b"\x6D"
+        return b"\x6d"
 
 
 class I32DivU(Instruction):
     def __bytes__(self):
-        return b"\x6E"
+        return b"\x6e"
 
 
 class I32RemS(Instruction):
     def __bytes__(self):
-        return b"\x6F"
+        return b"\x6f"
 
 
 class I32RemU(Instruction):
@@ -397,42 +397,42 @@ class I32Rotr(Instruction):
 
 class I32WrapI64(Instruction):
     def __bytes__(self):
-        return b"\xA7"
+        return b"\xa7"
 
 
 class I32TruncF32S(Instruction):
     def __bytes__(self):
-        return b"\xA8"
+        return b"\xa8"
 
 
 class I32TruncF32U(Instruction):
     def __bytes__(self):
-        return b"\xA9"
+        return b"\xa9"
 
 
 class I32TruncF64S(Instruction):
     def __bytes__(self):
-        return b"\xAA"
+        return b"\xaa"
 
 
 class I32TruncF64U(Instruction):
     def __bytes__(self):
-        return b"\xAB"
+        return b"\xab"
 
 
 class I32ReinterpretF32(Instruction):
     def __bytes__(self):
-        return b"\xBC"
+        return b"\xbc"
 
 
 class I32Extend8S(Instruction):
     def __bytes__(self):
-        return b"\xC0"
+        return b"\xc0"
 
 
 class I32Extend16S(Instruction):
     def __bytes__(self):
-        return b"\xC1"
+        return b"\xc1"
 
 
 class I64(Instruction):
@@ -519,7 +519,7 @@ class I64Store(I64):
 class I64Store8(I64):
     def __bytes__(self):
         return (
-            b"\x3C"
+            b"\x3c"
             + bytes(Integer(value=self.align))
             + bytes(Integer(value=self.offset))
         )
@@ -528,7 +528,7 @@ class I64Store8(I64):
 class I64Store16(I64):
     def __bytes__(self):
         return (
-            b"\x3D"
+            b"\x3d"
             + bytes(Integer(value=self.align))
             + bytes(Integer(value=self.offset))
         )
@@ -537,7 +537,7 @@ class I64Store16(I64):
 class I64Store32(I64):
     def __bytes__(self):
         return (
-            b"\x3E"
+            b"\x3e"
             + bytes(Integer(value=self.align))
             + bytes(Integer(value=self.offset))
         )
@@ -603,7 +603,7 @@ class I64GeS(Instruction):
 
 class I64GeU(Instruction):
     def __bytes__(self):
-        return b"\x5A"
+        return b"\x5a"
 
 
 class I64Clz(Instruction):
@@ -613,32 +613,32 @@ class I64Clz(Instruction):
 
 class I64Ctz(Instruction):
     def __bytes__(self):
-        return b"\x7A"
+        return b"\x7a"
 
 
 class I64Popcnt(Instruction):
     def __bytes__(self):
-        return b"\x7B"
+        return b"\x7b"
 
 
 class I64Add(Instruction):
     def __bytes__(self):
-        return b"\x7C"
+        return b"\x7c"
 
 
 class I64Sub(Instruction):
     def __bytes__(self):
-        return b"\x7D"
+        return b"\x7d"
 
 
 class I64Mul(Instruction):
     def __bytes__(self):
-        return b"\x7E"
+        return b"\x7e"
 
 
 class I64DivS(Instruction):
     def __bytes__(self):
-        return b"\x7F"
+        return b"\x7f"
 
 
 class I64DivU(Instruction):
@@ -693,54 +693,54 @@ class I64Rotl(Instruction):
 
 class I64Rotr(Instruction):
     def __bytes__(self):
-        return b"\x8A"
+        return b"\x8a"
 
 
 class I64ExtendI32S(Instruction):
     def __bytes__(self):
-        return b"\xAC"
+        return b"\xac"
 
 
 class I64ExtendI32U(Instruction):
     def __bytes__(self):
-        return b"\xAD"
+        return b"\xad"
 
 
 class I64TruncF32S(Instruction):
     def __bytes__(self):
-        return b"\xAE"
+        return b"\xae"
 
 
 class I64TruncF32U(Instruction):
     def __bytes__(self):
-        return b"\xAF"
+        return b"\xaf"
 
 
 class I64TruncF64S(Instruction):
     def __bytes__(self):
-        return b"\xB0"
+        return b"\xb0"
 
 
 class I64TruncF64U(Instruction):
     def __bytes__(self):
-        return b"\xB1"
+        return b"\xb1"
 
 
 class I64ReinterpretF64(Instruction):
     def __bytes__(self):
-        return b"\xBD"
+        return b"\xbd"
 
 
 class I64Extend8S(Instruction):
     def __bytes__(self):
-        return b"\xC0"
+        return b"\xc0"
 
 
 class I64Extend16S(Instruction):
     def __bytes__(self):
-        return b"\xC1"
+        return b"\xc1"
 
 
 class I64Extend32S(Instruction):
     def __bytes__(self):
-        return b"\xC2"
+        return b"\xc2"
