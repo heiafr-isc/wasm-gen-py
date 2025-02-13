@@ -1,0 +1,27 @@
+# SPDX-FileCopyrightText: 2025 Jacques Supcik <jacques.supcik@hefr.ch>
+#
+# SPDX-License-Identifier: Apache-2.0 OR MIT
+#
+[project]
+name = "wasm-gen"
+version = "0.1.0"
+description = ""
+authors = [{ name = "Jacques Supcik", email = "jacques@supcik.net" }]
+license = "Apache-2.0 OR MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pydantic = "^2.9.2"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.7.2"
+black = "^24.10.0"
+pytest = "^8.3.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+select = ["E", "F", "B", "Q", "N", "I", "UP", "PL", "RUF", "C90"]
