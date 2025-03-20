@@ -8,4 +8,3 @@
 /test/*/site
 __pycache__
 *.wasm
-test*.py

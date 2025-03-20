@@ -23,19 +23,23 @@ class Nop(Instruction):
         return b"\x01"
 
 
-class Block(Instruction):
+class BlockInstruction(Instruction):
+    block_type: int = 0x40
+
+
+class Block(BlockInstruction):
     def __bytes__(self):
-        return b"\x02"
+        return b"\x02" + bytes(Integer(value=self.block_type))
 
 
-class Loop(Instruction):
+class Loop(BlockInstruction):
     def __bytes__(self):
-        return b"\x03"
+        return b"\x03" + bytes(Integer(value=self.block_type))
 
 
-class If(Instruction):
+class If(BlockInstruction):
     def __bytes__(self):
-        return b"\x04"
+        return b"\x04" + bytes(Integer(value=self.block_type))
 
 
 class Else(Instruction):
