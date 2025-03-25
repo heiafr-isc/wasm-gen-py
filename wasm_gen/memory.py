@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: Apache-2.0 OR MIT
 
 from wasm_gen.core import Node
-from wasm_gen.values import Integer
+from wasm_gen.values import UnsignedInt
 
 
 class MemoryType(Node):
@@ -12,12 +12,12 @@ class MemoryType(Node):
 
     def __bytes__(self):
         if self.max_pages is None:
-            return b"\x00" + bytes(Integer(value=self.min_pages))
+            return b"\x00" + bytes(UnsignedInt(value=self.min_pages))
         else:
             return (
                 b"\x01"
-                + bytes(Integer(value=self.min_pages))
-                + bytes(Integer(value=self.max_pages))
+                + bytes(UnsignedInt(value=self.min_pages))
+                + bytes(UnsignedInt(value=self.max_pages))
             )
 
 

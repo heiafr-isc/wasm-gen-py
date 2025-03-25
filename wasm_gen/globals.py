@@ -5,7 +5,7 @@
 from pydantic import Field
 
 from wasm_gen.core import Node
-from wasm_gen.values import Integer
+from wasm_gen.values import UnsignedInt
 
 
 class GlobalType(Node):
@@ -15,9 +15,9 @@ class GlobalType(Node):
 
     def __bytes__(self):
         if self.mutable:
-            return self.type + bytes(Integer(value=1))
+            return self.type + bytes(UnsignedInt(value=1))
         else:
-            return self.type + bytes(Integer(value=0))
+            return self.type + bytes(UnsignedInt(value=0))
 
 
 class BaseGlobal(Node):

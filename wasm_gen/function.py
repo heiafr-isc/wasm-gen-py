@@ -6,7 +6,7 @@ from pydantic import Field
 
 from wasm_gen import instructions as I  # noqa
 from wasm_gen.core import Node
-from wasm_gen.values import Integer, Vector
+from wasm_gen.values import UnsignedInt, Vector
 
 
 class LocalVariables(Node):
@@ -15,7 +15,7 @@ class LocalVariables(Node):
     type: bytes
 
     def __bytes__(self) -> bytes:
-        return bytes(Integer(value=self.count)) + self.type
+        return bytes(UnsignedInt(value=self.count)) + self.type
 
 
 class FunctionType(Node):
@@ -54,4 +54,4 @@ class Function(BaseFunction):
         bv = bytes(Vector(values=[bytes(v) for v in self.local_vars])) + b"".join(
             [bytes(b) for b in self.body]
         )
-        return bytes(Integer(value=len(bv))) + bv
+        return bytes(UnsignedInt(value=len(bv))) + bv

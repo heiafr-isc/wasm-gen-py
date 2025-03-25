@@ -6,7 +6,7 @@ from wasm_gen.core import Node
 from wasm_gen.function import BaseFunction
 from wasm_gen.globals import BaseGlobal
 from wasm_gen.memory import BaseMemory
-from wasm_gen.values import Integer, Name
+from wasm_gen.values import Name, UnsignedInt
 
 func = b"\x00"
 table = b"\x01"
@@ -23,7 +23,7 @@ class Import(Node):
     def __bytes__(self):
         desc = None
         if isinstance(self.node, BaseFunction):
-            desc = func + bytes(Integer(value=self.node.type._index))
+            desc = func + bytes(UnsignedInt(value=self.node.type._index))
         elif isinstance(self.node, BaseMemory):
             desc = mem + bytes(self.node.type)
         elif isinstance(self.node, BaseGlobal):

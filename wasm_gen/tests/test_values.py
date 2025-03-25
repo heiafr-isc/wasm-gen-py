@@ -2,17 +2,23 @@
 #
 # SPDX-License-Identifier: Apache-2.0 OR MIT
 
-from wasm_gen.values import Integer, Name
+from wasm_gen.values import Name, SignedInt, UnsignedInt
 
 
 def test_integers():
-    n = Integer(value=624485)
+    n = UnsignedInt(value=624485)
     assert bytes(n) == b"\xe5\x8e\x26"
 
-    n = Integer(value=-123456, signed=True)
+    n = SignedInt(value=-123456)
     assert bytes(n) == b"\xc0\xbb\x78"
 
-    n = Integer(value=1)
+    n = SignedInt(value=64)
+    assert bytes(n) == b"\xc0\x00"
+
+    n = UnsignedInt(value=64)
+    assert bytes(n) == b"\x40"
+
+    n = UnsignedInt(value=1)
     assert bytes(n) == b"\x01"
     assert n.to_bytes(5) == b"\x81\x80\x80\x80\x00"
 

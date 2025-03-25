@@ -5,7 +5,7 @@
 from wasm_gen.core import Node
 from wasm_gen.function import BaseFunction
 from wasm_gen.globals import BaseGlobal
-from wasm_gen.values import Integer
+from wasm_gen.values import SignedInt, UnsignedInt
 
 
 class Instruction(Node):
@@ -29,17 +29,17 @@ class BlockInstruction(Instruction):
 
 class Block(BlockInstruction):
     def __bytes__(self):
-        return b"\x02" + bytes(Integer(value=self.block_type))
+        return b"\x02" + bytes(UnsignedInt(value=self.block_type))
 
 
 class Loop(BlockInstruction):
     def __bytes__(self):
-        return b"\x03" + bytes(Integer(value=self.block_type))
+        return b"\x03" + bytes(UnsignedInt(value=self.block_type))
 
 
 class If(BlockInstruction):
     def __bytes__(self):
-        return b"\x04" + bytes(Integer(value=self.block_type))
+        return b"\x04" + bytes(UnsignedInt(value=self.block_type))
 
 
 class Else(Instruction):
@@ -57,7 +57,7 @@ class Br(Instruction):
     label: int
 
     def __bytes__(self):
-        return b"\x0c" + bytes(Integer(value=self.label))
+        return b"\x0c" + bytes(UnsignedInt(value=self.label))
 
 
 class BrIf(Instruction):
@@ -65,7 +65,7 @@ class BrIf(Instruction):
     label: int
 
     def __bytes__(self):
-        return b"\x0d" + bytes(Integer(value=self.label))
+        return b"\x0d" + bytes(UnsignedInt(value=self.label))
 
 
 class BrTable(Instruction):
@@ -83,7 +83,7 @@ class Call(Instruction):
     function: BaseFunction
 
     def __bytes__(self):
-        return b"\x10" + bytes(Integer(value=self.function._index))
+        return b"\x10" + bytes(UnsignedInt(value=self.function._index))
 
 
 class CallIndirect(Instruction):
@@ -94,8 +94,8 @@ class CallIndirect(Instruction):
     def __bytes__(self):
         return (
             b"\x11"
-            + bytes(Integer(value=self.typeidx))
-            + bytes(Integer(value=self.tableidx))
+            + bytes(UnsignedInt(value=self.typeidx))
+            + bytes(UnsignedInt(value=self.tableidx))
         )
 
 
@@ -114,7 +114,7 @@ class LocalGet(Instruction):
     localidx: int
 
     def __bytes__(self):
-        return b"\x20" + bytes(Integer(value=self.localidx))
+        return b"\x20" + bytes(UnsignedInt(value=self.localidx))
 
 
 class LocalSet(Instruction):
@@ -122,7 +122,7 @@ class LocalSet(Instruction):
     localidx: int
 
     def __bytes__(self):
-        return b"\x21" + bytes(Integer(value=self.localidx))
+        return b"\x21" + bytes(UnsignedInt(value=self.localidx))
 
 
 class LocalTee(Instruction):
@@ -130,7 +130,7 @@ class LocalTee(Instruction):
     localidx: int
 
     def __bytes__(self):
-        return b"\x22" + bytes(Integer(value=self.localidx))
+        return b"\x22" + bytes(UnsignedInt(value=self.localidx))
 
 
 class GlobalGet(Instruction):
@@ -138,7 +138,7 @@ class GlobalGet(Instruction):
     global_: BaseGlobal
 
     def __bytes__(self):
-        return b"\x23" + bytes(Integer(value=self.global_._index))
+        return b"\x23" + bytes(UnsignedInt(value=self.global_._index))
 
 
 class GlobalSet(Instruction):
@@ -146,7 +146,7 @@ class GlobalSet(Instruction):
     global_: BaseGlobal
 
     def __bytes__(self):
-        return b"\x24" + bytes(Integer(value=self.global_._index))
+        return b"\x24" + bytes(UnsignedInt(value=self.global_._index))
 
 
 class TableGet(Instruction):
@@ -154,7 +154,7 @@ class TableGet(Instruction):
     tableidx: int
 
     def __bytes__(self):
-        return b"\x25" + bytes(Integer(value=self.tableidx))
+        return b"\x25" + bytes(UnsignedInt(value=self.tableidx))
 
 
 class TableSet(Instruction):
@@ -162,7 +162,7 @@ class TableSet(Instruction):
     tableidx: int
 
     def __bytes__(self):
-        return b"\x26" + bytes(Integer(value=self.tableidx))
+        return b"\x26" + bytes(UnsignedInt(value=self.tableidx))
 
 
 class I32(Instruction):
@@ -178,8 +178,8 @@ class I32Load(I32):
     def __bytes__(self):
         return (
             b"\x28"
-            + bytes(Integer(value=self.align))
-            + bytes(Integer(value=self.offset))
+            + bytes(UnsignedInt(value=self.align))
+            + bytes(UnsignedInt(value=self.offset))
         )
 
 
@@ -187,8 +187,8 @@ class I32Load8S(I32):
     def __bytes__(self):
         return (
             b"\x2c"
-            + bytes(Integer(value=self.align))
-            + bytes(Integer(value=self.offset))
+            + bytes(UnsignedInt(value=self.align))
+            + bytes(UnsignedInt(value=self.offset))
         )
 
 
@@ -196,8 +196,8 @@ class I32Load8U(I32):
     def __bytes__(self):
         return (
             b"\x2d"
-            + bytes(Integer(value=self.align))
-            + bytes(Integer(value=self.offset))
+            + bytes(UnsignedInt(value=self.align))
+            + bytes(UnsignedInt(value=self.offset))
         )
 
 
@@ -205,8 +205,8 @@ class I32Load16S(I32):
     def __bytes__(self):
         return (
             b"\x2e"
-            + bytes(Integer(value=self.align))
-            + bytes(Integer(value=self.offset))
+            + bytes(UnsignedInt(value=self.align))
+            + bytes(UnsignedInt(value=self.offset))
         )
 
 
@@ -214,8 +214,8 @@ class I32Load16U(I32):
     def __bytes__(self):
         return (
             b"\x2f"
-            + bytes(Integer(value=self.align))
-            + bytes(Integer(value=self.offset))
+            + bytes(UnsignedInt(value=self.align))
+            + bytes(UnsignedInt(value=self.offset))
         )
 
 
@@ -223,8 +223,8 @@ class I32Store(I32):
     def __bytes__(self):
         return (
             b"\x36"
-            + bytes(Integer(value=self.align))
-            + bytes(Integer(value=self.offset))
+            + bytes(UnsignedInt(value=self.align))
+            + bytes(UnsignedInt(value=self.offset))
         )
 
 
@@ -232,8 +232,8 @@ class I32Store8(I32):
     def __bytes__(self):
         return (
             b"\x3a"
-            + bytes(Integer(value=self.align))
-            + bytes(Integer(value=self.offset))
+            + bytes(UnsignedInt(value=self.align))
+            + bytes(UnsignedInt(value=self.offset))
         )
 
 
@@ -241,8 +241,8 @@ class I32Store16(I32):
     def __bytes__(self):
         return (
             b"\x3b"
-            + bytes(Integer(value=self.align))
-            + bytes(Integer(value=self.offset))
+            + bytes(UnsignedInt(value=self.align))
+            + bytes(UnsignedInt(value=self.offset))
         )
 
 
@@ -251,7 +251,7 @@ class I32Const(Instruction):
     value: int
 
     def __bytes__(self):
-        return b"\x41" + bytes(Integer(value=self.value))
+        return b"\x41" + bytes(SignedInt(value=self.value))
 
 
 class I32Eqz(Instruction):
@@ -452,8 +452,8 @@ class I64Load(I64):
     def __bytes__(self):
         return (
             b"\x29"
-            + bytes(Integer(value=self.align))
-            + bytes(Integer(value=self.offset))
+            + bytes(UnsignedInt(value=self.align))
+            + bytes(UnsignedInt(value=self.offset))
         )
 
 
@@ -461,8 +461,8 @@ class I64Load8S(I64):
     def __bytes__(self):
         return (
             b"\x30"
-            + bytes(Integer(value=self.align))
-            + bytes(Integer(value=self.offset))
+            + bytes(UnsignedInt(value=self.align))
+            + bytes(UnsignedInt(value=self.offset))
         )
 
 
@@ -470,8 +470,8 @@ class I64Load8U(I64):
     def __bytes__(self):
         return (
             b"\x31"
-            + bytes(Integer(value=self.align))
-            + bytes(Integer(value=self.offset))
+            + bytes(UnsignedInt(value=self.align))
+            + bytes(UnsignedInt(value=self.offset))
         )
 
 
@@ -479,8 +479,8 @@ class I64Load16S(I64):
     def __bytes__(self):
         return (
             b"\x32"
-            + bytes(Integer(value=self.align))
-            + bytes(Integer(value=self.offset))
+            + bytes(UnsignedInt(value=self.align))
+            + bytes(UnsignedInt(value=self.offset))
         )
 
 
@@ -488,8 +488,8 @@ class I64Load16U(I64):
     def __bytes__(self):
         return (
             b"\x33"
-            + bytes(Integer(value=self.align))
-            + bytes(Integer(value=self.offset))
+            + bytes(UnsignedInt(value=self.align))
+            + bytes(UnsignedInt(value=self.offset))
         )
 
 
@@ -497,8 +497,8 @@ class I64Load32S(I64):
     def __bytes__(self):
         return (
             b"\x34"
-            + bytes(Integer(value=self.align))
-            + bytes(Integer(value=self.offset))
+            + bytes(UnsignedInt(value=self.align))
+            + bytes(UnsignedInt(value=self.offset))
         )
 
 
@@ -506,8 +506,8 @@ class I64Load32U(I64):
     def __bytes__(self):
         return (
             b"\x35"
-            + bytes(Integer(value=self.align))
-            + bytes(Integer(value=self.offset))
+            + bytes(UnsignedInt(value=self.align))
+            + bytes(UnsignedInt(value=self.offset))
         )
 
 
@@ -515,8 +515,8 @@ class I64Store(I64):
     def __bytes__(self):
         return (
             b"\x37"
-            + bytes(Integer(value=self.align))
-            + bytes(Integer(value=self.offset))
+            + bytes(UnsignedInt(value=self.align))
+            + bytes(UnsignedInt(value=self.offset))
         )
 
 
@@ -524,8 +524,8 @@ class I64Store8(I64):
     def __bytes__(self):
         return (
             b"\x3c"
-            + bytes(Integer(value=self.align))
-            + bytes(Integer(value=self.offset))
+            + bytes(UnsignedInt(value=self.align))
+            + bytes(UnsignedInt(value=self.offset))
         )
 
 
@@ -533,8 +533,8 @@ class I64Store16(I64):
     def __bytes__(self):
         return (
             b"\x3d"
-            + bytes(Integer(value=self.align))
-            + bytes(Integer(value=self.offset))
+            + bytes(UnsignedInt(value=self.align))
+            + bytes(UnsignedInt(value=self.offset))
         )
 
 
@@ -542,8 +542,8 @@ class I64Store32(I64):
     def __bytes__(self):
         return (
             b"\x3e"
-            + bytes(Integer(value=self.align))
-            + bytes(Integer(value=self.offset))
+            + bytes(UnsignedInt(value=self.align))
+            + bytes(UnsignedInt(value=self.offset))
         )
 
 
@@ -552,7 +552,7 @@ class I64Const(Instruction):
     value: int
 
     def __bytes__(self):
-        return b"\x42" + bytes(Integer(value=self.value))
+        return b"\x42" + bytes(SignedInt(value=self.value))
 
 
 class I64Eqz(Instruction):

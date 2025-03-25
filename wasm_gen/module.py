@@ -12,7 +12,7 @@ from wasm_gen.function import BaseFunction, Function
 from wasm_gen.globals import BaseGlobal, Global
 from wasm_gen.imports import Import
 from wasm_gen.memory import BaseMemory, Memory
-from wasm_gen.values import Integer, Vector
+from wasm_gen.values import UnsignedInt, Vector
 
 
 class Section(Node):
@@ -23,7 +23,7 @@ class Section(Node):
     def __bytes__(self) -> bytes:
         return (
             bytes(bytes([self.section_id]))
-            + bytes(Integer(value=len(self.body)))
+            + bytes(UnsignedInt(value=len(self.body)))
             + self.body
         )
 
@@ -114,7 +114,9 @@ class Module(Node):
             section_id=3,
             body=bytes(
                 Vector(
-                    values=[bytes(Integer(value=f.type._index)) for f in self.funcs],
+                    values=[
+                        bytes(UnsignedInt(value=f.type._index)) for f in self.funcs
+                    ],
                 )
             ),
         )
