@@ -21,12 +21,12 @@ from wasm_gen import instructions as I  # noqa
 from wasm_gen.type import i32_t
 
 
-def test_oberon0():
+def test_42():
 
     m = Module()
 
     open_input = BaseFunction(type=FunctionType(params=[], results=[]))
-    read_int = BaseFunction(type=FunctionType(params=[], results=[i32_t]))
+    read_int = BaseFunction(type=FunctionType(params=[i32_t], results=[]))
     eot = BaseFunction(type=FunctionType(params=[], results=[i32_t]))
     write_char = BaseFunction(type=FunctionType(params=[i32_t], results=[]))
     write_int = BaseFunction(type=FunctionType(params=[i32_t, i32_t], results=[]))
@@ -49,86 +49,36 @@ def test_oberon0():
     sp = BaseGlobal(type=GlobalType(type=i32_t, mutable=True))
     m.imports.append(Import(node=sp, module="env", name="__stack_pointer"))
 
-    add = Function(type=FunctionType(params=[], results=[]))
+    say42 = Function(type=FunctionType(params=[], results=[]))
 
-    #  Do the addition of two numbers
-    add.body.extend(
+    say42.body.extend(
         [
-            I.Call(function=open_input),
-            I.Call(function=read_int),
-            I.Call(function=read_int),
-            I.I32Add(),
-        ]
-    )
-
-    # Write the result of the addition
-    add.body.extend(
-        [
-            I.I32Const(value=5),
-            I.Call(function=write_int),
-            I.Call(function=write_ln),
-        ]
-    )
-
-    # Substract 4 from the stack pointer
-    add.body.extend(
-        [
-            I.GlobalGet(global_=sp),
-            I.I32Const(value=4),
-            I.I32Sub(),
-            I.GlobalSet(global_=sp),
-        ]
-    )
-
-    # Store 42 into memory (at stack pointer)
-    add.body.extend(
-        [
-            I.GlobalGet(global_=sp),
             I.I32Const(value=42),
-            I.I32Store(),
-        ]
-    )
-
-    # Write the value of the stack pointer
-    add.body.extend(
-        [
-            I.GlobalGet(global_=sp),
             I.I32Const(value=5),
             I.Call(function=write_int),
             I.Call(function=write_ln),
         ]
     )
 
-    # Print the value on the top of the stack
-    add.body.extend(
-        [
-            I.GlobalGet(global_=sp),
-            I.I32Load(),
-            I.I32Const(value=5),
-            I.Call(function=write_int),
-            I.Call(function=write_ln),
-        ]
-    )
+    say42.body.append(I.End())
 
-    add.body.append(I.End())
-
-    m.funcs.append(add)
+    m.funcs.append(say42)
 
     m.exports.extend(
         [
-            Export(node=add, name="add"),
+            Export(node=say42, name="say42"),
         ]
     )
 
     sig = hashlib.sha256()
     sig.update(bytes(m))
 
-    target = Path(__file__).parent / "test_oberon0.wasm"
+    target = Path(__file__).parent / "test_say42.wasm"
 
     with open(target, "wb") as f:
         f.write(bytes(m))
 
     assert (
         sig.hexdigest()
-        == "b5c01ada212bf803a940b97e4f27dc745eab3847d29cf73e4e4693f4ee3f3526"
+        == "2b74aa60b199f96382ff779d467e21b70fad40cf7fa1674f8c423f3a34039c6a"
     )
