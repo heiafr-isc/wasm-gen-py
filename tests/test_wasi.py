@@ -20,7 +20,7 @@ from wasm_gen import instructions as I  # noqa  # noqa
 from wasm_gen.type import i32_t
 
 
-def test_wasi():
+def test_wasi() -> None:
     m = Module()
 
     f1 = BaseFunction(

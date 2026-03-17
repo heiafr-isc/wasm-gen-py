@@ -2,6 +2,8 @@
 #
 # SPDX-License-Identifier: Apache-2.0 OR MIT
 
+from dataclasses import dataclass
+
 from wasm_gen.core import Node
 from wasm_gen.function import BaseFunction
 from wasm_gen.globals import Global
@@ -14,12 +16,13 @@ mem = b"\x02"
 global_ = b"\x03"
 
 
+@dataclass
 class Export(Node):
 
     node: Node
     name: str
 
-    def __bytes__(self):
+    def __bytes__(self) -> bytes:
         desc = None
         if isinstance(self.node, BaseFunction):
             desc = func + bytes(UnsignedInt(value=self.node._index))

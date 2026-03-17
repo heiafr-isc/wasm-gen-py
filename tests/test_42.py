@@ -21,7 +21,7 @@ from wasm_gen import instructions as I  # noqa
 from wasm_gen.type import i32_t
 
 
-def test_42():
+def test_42() -> None:
 
     m = Module()
 

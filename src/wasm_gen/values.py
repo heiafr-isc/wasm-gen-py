@@ -2,9 +2,14 @@
 #
 # SPDX-License-Identifier: Apache-2.0 OR MIT
 
+import struct
+from collections.abc import Sequence
+from dataclasses import dataclass
+
 from wasm_gen.core import Node
 
 
+@dataclass
 class UnsignedInt(Node):
 
     value: int
@@ -24,6 +29,7 @@ class UnsignedInt(Node):
         return self.to_bytes()
 
 
+@dataclass
 class SignedInt(Node):
 
     value: int
@@ -46,15 +52,22 @@ class SignedInt(Node):
         return self.to_bytes()
 
 
+@dataclass
 class FloatingPoint(Node):
 
     value: float
     size: int = 4
 
     def __bytes__(self) -> bytes:
-        return self.value.to_bytes(self.size, "little")
+        if self.size == 8:
+            return struct.pack("d", self.value)
+        elif self.size == 4:
+            return struct.pack("f", self.value)
+        else:
+            raise ValueError(f"Invalid size {self.size} for FloatingPoint")
 
 
+@dataclass
 class Name(Node):
 
     value: str
@@ -64,11 +77,12 @@ class Name(Node):
         return bytes(UnsignedInt(value=len(value))) + value
 
 
+@dataclass
 class Vector(Node):
 
-    values: list
+    values: Sequence[Node | bytes]
 
-    def __bytes__(self):
+    def __bytes__(self) -> bytes:
         res = bytes(UnsignedInt(value=len(self.values)))
         for value in self.values:
             res += bytes(value)

@@ -3,18 +3,19 @@
 # SPDX-License-Identifier: Apache-2.0 OR MIT
 
 import pickle
-
-from pydantic import Field, PositiveInt
+from dataclasses import dataclass, field
 
 from wasm_gen.core import Node
+from wasm_gen.data import ActiveData
 from wasm_gen.exports import Export
-from wasm_gen.function import BaseFunction, Function
+from wasm_gen.function import BaseFunction, Function, FunctionType
 from wasm_gen.globals import BaseGlobal, Global
 from wasm_gen.imports import Import
 from wasm_gen.memory import BaseMemory, Memory
 from wasm_gen.values import UnsignedInt, Vector
 
 
+@dataclass
 class Section(Node):
 
     section_id: int
@@ -28,20 +29,19 @@ class Section(Node):
         )
 
 
+@dataclass
 class Module(Node):
+    version: int = 1
+    imports: list[Import] = field(default_factory=list)
+    exports: list[Export] = field(default_factory=list)
+    funcs: list[Function] = field(default_factory=list)
+    memories: list[Memory] = field(default_factory=list)
+    globals_: list[Global] = field(default_factory=list)
+    data: list[bytes | ActiveData] = field(default_factory=list)
 
-    version: PositiveInt = 1
+    _types: list[FunctionType] = field(default_factory=list)
 
-    imports: list[Import] = Field(default_factory=list)
-    exports: list[Export] = Field(default_factory=list)
-    funcs: list[Function] = Field(default_factory=list)
-    memories: list[Memory] = Field(default_factory=list)
-    globals_: list[Global] = Field(default_factory=list)
-    data: list = Field(default_factory=list)
-
-    _types: list
-
-    def compute_indexes(self):
+    def compute_indexes(self) -> None:
         types = {}
         type_index = 0
         function_index = 0
@@ -121,15 +121,15 @@ class Module(Node):
             ),
         )
 
-    def memory_section(self) -> Section:
+    def memory_section(self) -> Section | None:
         if len(self.memories) == 0:
-            return b""
+            return None
         mv = bytes(Vector(values=[bytes(i) for i in self.memories]))
         return Section(section_id=5, body=mv)
 
-    def global_section(self) -> Section:
+    def global_section(self) -> Section | None:
         if len(self.globals_) == 0:
-            return b""
+            return None
         gv = bytes(Vector(values=[bytes(i) for i in self.globals_]))
         return Section(section_id=6, body=gv)
 
@@ -148,16 +148,12 @@ class Module(Node):
             section_id=10, body=bytes(Vector(values=[bytes(f) for f in self.funcs]))
         )
 
-    def data_section(self) -> Section:
-
+    def data_section(self) -> Section | None:
         if len(self.data) == 0:
-            return b""
+            return None
 
         dv = bytes(Vector(values=[bytes(i) for i in self.data]))
         return Section(section_id=11, body=dv)
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
 
     def magic(self) -> bytes:
         return b"\0asm"
@@ -165,32 +161,35 @@ class Module(Node):
     def write_version(self) -> bytes:
         return self.version.to_bytes(4, "little")
 
-    def add_import(self, import_: Import):
+    def add_import(self, import_: Import) -> None:
         self.imports.append(import_)
 
-    def add_export(self, export: Node):
+    def add_export(self, export: Export) -> None:
         self.exports.append(export)
 
-    def add_function(self, function: Function):
+    def add_function(self, function: Function) -> None:
         self.funcs.append(function)
 
-    def add_memory(self, memory):
+    def add_memory(self, memory: Memory) -> None:
         self.memories.append(memory)
 
-    def add_data(self, data):
+    def add_data(self, data: bytes) -> None:
         self.data.append(data)
 
     def __bytes__(self) -> bytes:
         self.compute_indexes()
-        return (
-            self.magic()
-            + self.write_version()
-            + bytes(self.type_section())  # 1
-            + bytes(self.import_section())  # 2
-            + bytes(self.function_section())  # 3
-            + bytes(self.memory_section())  # 5
-            + bytes(self.global_section())  # 6
-            + bytes(self.export_section())  # 7
-            + bytes(self.code_section())  # 10
-            + bytes(self.data_section())  # 11
-        )
+        res = b""
+        res += self.magic()
+        res += self.write_version()
+        res += bytes(self.type_section())  # 1
+        res += bytes(self.import_section())  # 2
+        res += bytes(self.function_section())  # 3
+        if (s := self.memory_section()) is not None:
+            res += bytes(s)  # 5
+        if (s := self.global_section()) is not None:
+            res += bytes(s)  # 6
+        res += bytes(self.export_section())  # 7
+        res += bytes(self.code_section())  # 10
+        if (s := self.data_section()) is not None:
+            res += bytes(s)  # 11
+        return res

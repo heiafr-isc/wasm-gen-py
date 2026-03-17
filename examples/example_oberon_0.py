@@ -2,6 +2,14 @@
 #
 # SPDX-License-Identifier: Apache-2.0 OR MIT
 
+"""
+This is an example of how to use the WASM Generator to generate a simple
+WebAssembly module that adds two numbers and prints the result. The
+generated module imports some functions from the host environment (e.g.,
+for reading input and writing output) and defines a function that
+performs the addition and prints the result.
+"""
+
 from wasm_gen import (
     BaseFunction,
     BaseGlobal,

@@ -2,13 +2,14 @@
 #
 # SPDX-License-Identifier: Apache-2.0 OR MIT
 
-from pydantic import Field
+from dataclasses import dataclass, field
 
 from wasm_gen import instructions as I  # noqa
 from wasm_gen.core import Node
 from wasm_gen.values import UnsignedInt, Vector
 
 
+@dataclass
 class LocalVariables(Node):
 
     count: int
@@ -18,13 +19,14 @@ class LocalVariables(Node):
         return bytes(UnsignedInt(value=self.count)) + self.type
 
 
+@dataclass
 class FunctionType(Node):
 
-    params: list[bytes] = Field(default_factory=list)
-    results: list[bytes] = Field(default_factory=list)
+    params: list[bytes] = field(default_factory=list)
+    results: list[bytes] = field(default_factory=list)
     _index: int = -1
 
-    def __bytes__(self):
+    def __bytes__(self) -> bytes:
         return (
             b"\x60"
             + bytes(Vector(values=self.params))
@@ -32,18 +34,20 @@ class FunctionType(Node):
         )
 
 
+@dataclass
 class BaseFunction(Node):
 
     type: FunctionType
     _index: int = -1
 
 
+@dataclass
 class Function(BaseFunction):
 
-    local_vars: list[bytes] = Field(default_factory=list)
+    local_vars: list[bytes] = field(default_factory=list)
     # The body is actually a list of Instructions, but if we ask for
     # Instructions here, we get a nasty circular import
-    body: list[Node] = Field(default_factory=list)
+    body: list[Node] = field(default_factory=list)
 
     def __bytes__(self) -> bytes:
         if len(self.body) == 0:
