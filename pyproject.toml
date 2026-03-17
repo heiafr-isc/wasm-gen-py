@@ -57,6 +57,6 @@ search = "release = \"{current_version}\""
 replace = "release = \"{new_version}\""
 
 [[tool.bumpversion.files]]
-filename = "src/ebnf_compiler/__init__.py"
+filename = "src/wasm_gen/__init__.py"
 search = "__version__ = \"{current_version}\""
 replace = "__version__ = \"{new_version}\""
