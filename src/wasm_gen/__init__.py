@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: Apache-2.0 OR MIT
 
-__version__ = "0.2.1"
+__version__ = "0.3.0"
 
 from wasm_gen.data import ActiveData, PassiveData
 from wasm_gen.exports import Export

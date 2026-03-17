@@ -21,7 +21,7 @@ sys.path.append(str(Path(__file__).parent / "../examples"))
 project = "WASM Generator"
 copyright = "2026, Jacques Supcik"
 author = "Jacques Supcik"
-release = "0.2.1"
+release = "0.3.0"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
