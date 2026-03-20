@@ -28,7 +28,7 @@ from wasm_gen.type import i32_t
 m = Module()
 
 open_input = BaseFunction(type=FunctionType(params=[], results=[]))
-read_int = BaseFunction(type=FunctionType(params=[], results=[i32_t]))
+read_int = BaseFunction(type=FunctionType(params=[i32_t], results=[]))
 eot = BaseFunction(type=FunctionType(params=[], results=[i32_t]))
 write_char = BaseFunction(type=FunctionType(params=[i32_t], results=[]))
 write_int = BaseFunction(type=FunctionType(params=[i32_t, i32_t], results=[]))
@@ -54,62 +54,87 @@ m.imports.append(Import(node=sp, module="env", name="__stack_pointer"))
 
 add = Function(type=FunctionType(params=[], results=[]))
 
-#  Do the addition of two numbers
+# Substract 12 from the stack pointer
+add.body.extend(
+    [
+        I.GlobalGet(global_=sp),
+        I.I32Const(value=12),
+        I.I32Sub(),
+        I.GlobalSet(global_=sp),
+    ]
+)
+
+# Open the input stream
 add.body.extend(
     [
         I.Call(function=open_input),
-        I.Call(function=read_int),
-        I.Call(function=read_int),
+    ]
+)
+
+# Push the address of z (the result of the addition) onto the stack
+add.body.extend(
+    [
+        I.GlobalGet(global_=sp),
+        I.I32Const(value=8),
         I.I32Add(),
+    ]
+)
+
+# Read x and y
+add.body.extend(
+    [
+        I.GlobalGet(global_=sp),
+        I.I32Const(value=0),
+        I.I32Add(),
+        I.Call(function=read_int),
+        I.GlobalGet(global_=sp),
+        I.I32Const(value=4),
+        I.I32Add(),
+        I.Call(function=read_int),
+    ]
+)
+#  Do the addition of two numbers
+add.body.extend(
+    [
+        I.GlobalGet(global_=sp),
+        I.I32Const(value=0),
+        I.I32Add(),
+        I.I32Load(),
+        I.GlobalGet(global_=sp),
+        I.I32Const(value=4),
+        I.I32Add(),
+        I.I32Load(),
+        I.I32Add(),
+    ]
+)
+
+# Save the result of the addition in z
+add.body.extend(
+    [
+        I.I32Store(),
     ]
 )
 
 # Write the result of the addition
 add.body.extend(
     [
-        I.I32Const(value=5),
-        I.Call(function=write_int),
-        I.Call(function=write_ln),
-    ]
-)
-
-# Substract 4 from the stack pointer
-add.body.extend(
-    [
         I.GlobalGet(global_=sp),
-        I.I32Const(value=4),
-        I.I32Sub(),
-        I.GlobalSet(global_=sp),
-    ]
-)
-
-# Store 42 into memory (at stack pointer)
-add.body.extend(
-    [
-        I.GlobalGet(global_=sp),
-        I.I32Const(value=42),
-        I.I32Store(),
-    ]
-)
-
-# Write the value of the stack pointer
-add.body.extend(
-    [
-        I.GlobalGet(global_=sp),
-        I.I32Const(value=5),
-        I.Call(function=write_int),
-        I.Call(function=write_ln),
-    ]
-)
-
-# Print the value on the top of the stack
-add.body.extend(
-    [
-        I.GlobalGet(global_=sp),
+        I.I32Const(value=8),
+        I.I32Add(),
         I.I32Load(),
         I.I32Const(value=5),
         I.Call(function=write_int),
         I.Call(function=write_ln),
+    ]
+)
+
+# Restore the stack pointer
+add.body.extend(
+    [
+        I.GlobalGet(global_=sp),
+        I.I32Const(value=12),
+        I.I32Add(),
+        I.GlobalSet(global_=sp),
     ]
 )
 
