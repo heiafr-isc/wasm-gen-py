@@ -1,6 +1,6 @@
 [project]
 name = "wasm-gen"
-version = "0.3.2"
+version = "0.3.3"
 description = "WASM Generator"
 authors = [{ name = "Jacques Supcik", email = "jacques.supcik@hefr.ch" }]
 keywords = ["wasm", "generator", "compiler"]
@@ -37,7 +37,7 @@ stubPath = "src"
 typeCheckingMode = "standard"
 
 [tool.bumpversion]
-current_version = "0.3.2"
+current_version = "0.3.3"
 parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)"
 serialize = ["{major}.{minor}.{patch}"]
 search = "{current_version}"

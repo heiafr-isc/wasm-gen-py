@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-__version__ = "0.3.2"
+__version__ = "0.3.3"
 
 from wasm_gen.data import ActiveData, PassiveData
 from wasm_gen.exports import Export
