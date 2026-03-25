@@ -1,6 +1,6 @@
 [project]
 name = "wasm-gen"
-version = "0.1.0"
+version = "0.3.2"
 description = "WASM Generator"
 authors = [{ name = "Jacques Supcik", email = "jacques.supcik@hefr.ch" }]
 keywords = ["wasm", "generator", "compiler"]
