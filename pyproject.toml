@@ -32,6 +32,9 @@ select = ["E", "F", "B", "I"]
 [tool.pyright]
 venvPath = "."
 venv = ".venv"
+include = ["src", "tests"]
+stubPath = "src"
+typeCheckingMode = "standard"
 
 [tool.bumpversion]
 current_version = "0.3.1"
